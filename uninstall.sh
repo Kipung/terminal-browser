@@ -1,22 +1,52 @@
 #!/usr/bin/env bash
-# Removes this addon's include line from ~/.config/ghostty/config. Idempotent.
+# Remove everything install.sh added (marker-commented lines in each terminal
+# config + the wezterm module link). Leaves your own config content intact.
+# Idempotent: safe to re-run.
 set -euo pipefail
 
 ADDON_DIR="$(cd "$(dirname "$0")" && pwd)"
-GHOSTTY_CONFIG="$HOME/.config/ghostty/config"
-INCLUDE_LINE="config-file = $ADDON_DIR/ghostty.conf"
 
-if [ ! -f "$GHOSTTY_CONFIG" ]; then
-  echo "No Ghostty config found at $GHOSTTY_CONFIG — nothing to do."
-  exit 0
-fi
+strip_lines() { # <config-file> <line1> [<line2> ...] — removes exact lines + our markers
+  local file="$1"; shift
+  [ -f "$file" ] || { echo "  no config at $file — nothing to do"; return; }
+  local before after
+  before=$(wc -l < "$file")
+  grep -vxF -e "$1" "${@:2}" -e '# terminal-browser addon (ghostty)' \
+    -e '# terminal-browser addon (kitty)' -e '# terminal-browser addon (tmux)' \
+    "$file" > "$file.tmp" || true
+  mv "$file.tmp" "$file"
+  after=$(wc -l < "$file")
+  if [ "$before" -ne "$after" ]; then
+    echo "  cleaned: $file ($((before - after)) line(s) removed)"
+  else
+    echo "  already clean: $file"
+  fi
+}
 
-if grep -qF "$INCLUDE_LINE" "$GHOSTTY_CONFIG"; then
-  grep -vF "$INCLUDE_LINE" "$GHOSTTY_CONFIG" > "$GHOSTTY_CONFIG.tmp"
-  grep -v '^# terminal-browser ghostty-split addon$' "$GHOSTTY_CONFIG.tmp" > "$GHOSTTY_CONFIG" || true
-  rm -f "$GHOSTTY_CONFIG.tmp"
-  echo "Removed the addon include line from $GHOSTTY_CONFIG."
-  echo "Reload Ghostty config with Cmd+Shift+, to apply."
+echo "ghostty:"
+strip_lines "$HOME/.config/ghostty/config" \
+  "config-file = $ADDON_DIR/configs/ghostty.conf"
+
+echo "kitty:"
+strip_lines "$HOME/.config/kitty/kitty.conf" \
+  "include $ADDON_DIR/configs/kitty.conf"
+
+echo "tmux:"
+strip_lines "$HOME/.tmux.conf" \
+  "source-file $ADDON_DIR/configs/tmux.conf"
+
+echo "wezterm:"
+rm -f "$HOME/.config/wezterm/terminal_browser_addon.lua"
+echo "  unlinked module: ~/.config/wezterm/terminal_browser_addon.lua"
+W="$HOME/.config/wezterm/wezterm.lua"
+if [ -f "$W" ] && head -n1 "$W" | grep -qxF -- '-- terminal-browser addon (wezterm)'; then
+  # install.sh created this whole file — remove it. (If you had your own
+  # wezterm.lua, install.sh never edited it, so there's nothing to undo.)
+  rm -f "$W"; echo "  removed $W (created by install.sh)"
 else
-  echo "Addon include line not found — already uninstalled."
+  echo "  wezterm.lua untouched (not created by install.sh)"
 fi
+
+echo
+echo "Done. Reload each terminal's config to apply (Cmd/Ctrl+Shift+, ghostty,"
+echo "Ctrl+Shift+F5 kitty, ':source ~/.tmux.conf' tmux; wezterm auto-reloads)."

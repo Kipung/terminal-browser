@@ -1,7 +1,12 @@
-# ghostty-browser-split
+# terminal-browser
 
 **A live, clickable browser preview beside your terminal agents — at full speed, opened
 by you with one keypress or by any agent with one command.**
+
+> **Not to be confused with [terminal-browser](https://terminal-browser.dev) itself** —
+> this repo packages that excellent tool into a Ghostty workflow: it renders *inside* a
+> native Ghostty split so agents can show you live pages without the multiplexer
+> graphics frame-flood. Think "addon", not "fork".
 
 If you run coding agents in a terminal multiplexer and you've wished they could just…
 *show you the page* they're working on — that's this. `terminal-browser` renders a real
@@ -41,8 +46,8 @@ fast. This addon is that split-plus-launch flow, packaged.
 ## Install
 
 ```sh
-git clone https://github.com/Kipung/ghostty-browser-split
-cd ghostty-browser-split
+git clone https://github.com/Kipung/terminal-browser
+cd terminal-browser
 ./install.sh
 ```
 
@@ -50,7 +55,7 @@ cd ghostty-browser-split
 pointing at this folder, so everything stays live-editable here:
 
 ```
-config-file = /path/to/ghostty-browser-split/ghostty.conf
+config-file = /path/to/terminal-browser/ghostty.conf
 ```
 
 Reload the Ghostty config: **Cmd+Shift+,**

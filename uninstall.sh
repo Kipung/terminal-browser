@@ -13,7 +13,7 @@ fi
 
 if grep -qF "$INCLUDE_LINE" "$GHOSTTY_CONFIG"; then
   grep -vF "$INCLUDE_LINE" "$GHOSTTY_CONFIG" > "$GHOSTTY_CONFIG.tmp"
-  grep -v '^# ghostty-browser-split addon$' "$GHOSTTY_CONFIG.tmp" > "$GHOSTTY_CONFIG" || true
+  grep -v '^# terminal-browser ghostty-split addon$' "$GHOSTTY_CONFIG.tmp" > "$GHOSTTY_CONFIG" || true
   rm -f "$GHOSTTY_CONFIG.tmp"
   echo "Removed the addon include line from $GHOSTTY_CONFIG."
   echo "Reload Ghostty config with Cmd+Shift+, to apply."

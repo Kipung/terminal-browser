@@ -15,7 +15,7 @@ if grep -qF "$INCLUDE_LINE" "$GHOSTTY_CONFIG"; then
   echo "Already installed (include line present in $GHOSTTY_CONFIG):"
   echo "  $INCLUDE_LINE"
 else
-  printf '\n# ghostty-browser-split addon\n%s\n' "$INCLUDE_LINE" >> "$GHOSTTY_CONFIG"
+  printf '\n# terminal-browser ghostty-split addon\n%s\n' "$INCLUDE_LINE" >> "$GHOSTTY_CONFIG"
   echo "Added to $GHOSTTY_CONFIG:"
   echo "  $INCLUDE_LINE"
 fi

@@ -1,4 +1,4 @@
-# terminal-browser
+<picture><source media="(prefers-color-scheme: dark)" srcset=".github/banner-dark.svg"><img src=".github/banner-light.svg" width="100%" alt="terminal-browser"></picture>
 
 **A live, clickable browser preview beside your terminal agents — at full speed,
 opened by you with one hotkey or by any agent with one command.**

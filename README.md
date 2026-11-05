@@ -4,7 +4,7 @@
 opened by you with one hotkey or by any agent with one command.**
 macOS and Linux · Ghostty, kitty, WezTerm, tmux.
 
-<p align="center"><img src=".github/demo.gif" width="100%" alt="Commands in a Ghostty pane drive a live browser split showing kipung.github.io"></p>
+<p align="center"><img src=".github/demo.gif" width="100%" alt="An agent in a Ghostty pane reads, restyles, fills in and clicks a page in the browser split beside it"></p>
 
 > **Not to be confused with [terminal-browser](https://terminal-browser.dev) itself** —
 > this repo packages that excellent tool into your terminal workflow: it renders

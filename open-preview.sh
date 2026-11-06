@@ -38,7 +38,10 @@ elif [ "${TERM_PROGRAM:-}" = "vscode" ];   then host=vscode
 fi
 
 in_mux=0
-[ "${TERM_PROGRAM:-}" = "herdr" ] && in_mux=1
+# herdr sets HERDR_ENV and HERDR_PANE_ID in its panes but leaves TERM_PROGRAM empty.
+if [ -n "${HERDR_ENV:-}${HERDR_PANE_ID:-}" ] || [ "${TERM_PROGRAM:-}" = "herdr" ]; then
+  in_mux=1
+fi
 # Plain tmux: terminal-browser's own --split drives tmux — that's supported,
 # so tmux alone does NOT set in_mux. Only herdr-style floods do.
 
